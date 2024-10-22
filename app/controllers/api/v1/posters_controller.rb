@@ -4,31 +4,19 @@ class Api::V1::PostersController < ApplicationController
     render json: PosterSerializer.new(posters)
   end
 
+  def show
+    poster = Poster.find(params[:id])
+    render json: PosterSerializer.new(poster)
+  end
 
-
-
-
-
-
+  def create
+    poster = Poster.find(poster_params)
+    render json: PosterSerializer.new(posters)
+  end
   
-
- 
-
-
-end
-
-
-
-
-
-
-
-
-
-
-
-
-def create
-  poster = Poster.find(poster_params)
-  render json: PosterSerializer.new(posters)
+  private
+  
+  def poster_params
+    params.require(:poster).permit(:name, :description, :price, :year, :vintage, :img_url)
+  end
 end
