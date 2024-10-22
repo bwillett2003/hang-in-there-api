@@ -75,13 +75,13 @@ end
   
     expect(response). to be_successful
   
-    posters = JSON.parse(response.body, symbolize_names: true)
+    poster = JSON.parse(response.body, symbolize_names: true)
   
-    expect(poster[:attributes][:name]).to eq(@poster_1[:name])
-    expect(poster[:attributes][:description]).to eq(@poster_1[:description])
-    expect(poster[:attributes][:price]).to eq(@poster_1[:price])
-    expect(poster[:attributes][:year]).to eq(@poster_1[:year])
-    expect(poster[:attributes][:vintage]).to eq(@poster_1[:vintage])
-    expect(poster[:attributes][:img_url]).to eq(@poster_1[:img_url])
+    expect(poster[:data][:attributes][:name]).to eq(@poster_1[:name])
+    expect(poster[:data][:attributes][:description]).to eq(@poster_1[:description])
+    expect(poster[:data][:attributes][:price]).to eq(@poster_1[:price])
+    expect(poster[:data][:attributes][:year]).to eq(@poster_1[:year])
+    expect(poster[:data][:attributes][:vintage]).to eq(@poster_1[:vintage])
+    expect(poster[:data][:attributes][:img_url]).to eq(@poster_1[:img_url])
   end
 end

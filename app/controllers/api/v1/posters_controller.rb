@@ -10,10 +10,10 @@ class Api::V1::PostersController < ApplicationController
   end
 
   def create
-    poster = Poster.find(poster_params)
-    render json: PosterSerializer.new(posters)
+    poster = Poster.create(poster_params)
+    render json: PosterSerializer.new(poster)
   end
-  
+
   private
   
   def poster_params
