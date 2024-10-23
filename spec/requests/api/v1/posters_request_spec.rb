@@ -84,4 +84,15 @@ end
     expect(poster[:data][:attributes][:vintage]).to eq(@poster_1[:vintage])
     expect(poster[:data][:attributes][:img_url]).to eq(@poster_1[:img_url])
   end
+
+  it "destroys a poster" do
+
+    expect(Poster.count).to eq(3)
+
+    delete "/api/v1/posters/#{@poster_1.id}", headers: { "CONTENT_TYPE" => "application/json" }
+
+    expect(response). to have_http_status(:no_content)
+    expect { Poster.find(@poster_1.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    expect(Poster.count).to eq(2)
+  end
 end
