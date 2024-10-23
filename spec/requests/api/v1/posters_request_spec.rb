@@ -85,18 +85,31 @@ end
     expect(poster[:data][:attributes][:img_url]).to eq(@poster_1[:img_url])
   end
 
-it "destroys a poster" do
-  get "/api/v1/posters"
+  it "can update an existing poster" do
+    previous_name = @poster_1.name
+    poster_params = { name: "FAILURE" }
 
-  initial_count = JSON.parse(response.body, symbolize_names: true)[:data].count
-  delete "/api/v1/posters/#{@poster_1.id}", headers: { "CONTENT_TYPE" => "application/json" }
+    patch "/api/v1/posters/#{@poster_1.id}", params: poster_params.to_json, headers: { "CONTENT_TYPE" => "application/json" }
 
-  expect(response).to have_http_status(:no_content)
+    expect(response).to be_successful
 
-  get "/api/v1/posters"
+    poster = JSON.parse(response.body, symbolize_names: true)
+
+    expect(poster[:data][:attributes][:name]).to_not eq(previous_name)
+    expect(poster[:data][:attributes][:name]).to eq("FAILURE")
+  end
+
+  it "destroys a poster" do
+    get "/api/v1/posters"
   
-  final_count = JSON.parse(response.body, symbolize_names: true)[:data].count
-  expect(final_count).to eq(initial_count - 1)
+    initial_count = JSON.parse(response.body, symbolize_names: true)[:data].count
+    delete "/api/v1/posters/#{@poster_1.id}", headers: { "CONTENT_TYPE" => "application/json" }
   
+    expect(response).to have_http_status(:no_content)
+  
+    get "/api/v1/posters"
+    
+    final_count = JSON.parse(response.body, symbolize_names: true)[:data].count
+    expect(final_count).to eq(initial_count - 1)
   end
 end
