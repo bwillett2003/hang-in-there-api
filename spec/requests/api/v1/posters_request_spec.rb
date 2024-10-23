@@ -98,4 +98,18 @@ end
     expect(poster[:data][:attributes][:name]).to_not eq(previous_name)
     expect(poster[:data][:attributes][:name]).to eq("FAILURE")
   end
+
+  it "destroys a poster" do
+    get "/api/v1/posters"
+  
+    initial_count = JSON.parse(response.body, symbolize_names: true)[:data].count
+    delete "/api/v1/posters/#{@poster_1.id}", headers: { "CONTENT_TYPE" => "application/json" }
+  
+    expect(response).to have_http_status(:no_content)
+  
+    get "/api/v1/posters"
+    
+    final_count = JSON.parse(response.body, symbolize_names: true)[:data].count
+    expect(final_count).to eq(initial_count - 1)
+  end
 end
