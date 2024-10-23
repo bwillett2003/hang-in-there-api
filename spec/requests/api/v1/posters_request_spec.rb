@@ -84,4 +84,18 @@ end
     expect(poster[:data][:attributes][:vintage]).to eq(@poster_1[:vintage])
     expect(poster[:data][:attributes][:img_url]).to eq(@poster_1[:img_url])
   end
+
+  it "can update an existing poster" do
+    previous_name = @poster_1.name
+    poster_params = { name: "FAILURE" }
+
+    patch "/api/v1/posters/#{@poster_1.id}", params: poster_params.to_json, headers: { "CONTENT_TYPE" => "application/json" }
+
+    expect(response).to be_successful
+
+    poster = JSON.parse(response.body, symbolize_names: true)
+
+    expect(poster[:data][:attributes][:name]).to_not eq(previous_name)
+    expect(poster[:data][:attributes][:name]).to eq("FAILURE")
+  end
 end
