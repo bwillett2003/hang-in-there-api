@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe "API Posters Endpoints" do
+RSpec.describe "API Posters Endpoints" do
   before(:each) do
     @poster_1 = Poster.create(
       name: "REGRET",
@@ -49,8 +49,8 @@ describe "API Posters Endpoints" do
       expect(poster[:attributes][:year]).to be_a(Integer)
       expect(poster[:attributes][:vintage]).to eq(true).or eq(false)
       expect(poster[:attributes][:img_url]).to be_a(String)
-    end
   end
+end
 
   it "can get one poster" do
     get "/api/v1/posters/#{@poster_1.id}"
@@ -68,5 +68,20 @@ describe "API Posters Endpoints" do
     expect(poster[:data][:attributes][:year]).to be_a(Integer)
     expect(poster[:data][:attributes][:vintage]).to eq(true).or eq(false)
     expect(poster[:data][:attributes][:img_url]).to be_a(String)
+  end
+
+  it "creates a poster" do
+    post "/api/v1/posters", params: @poster_1.to_json, headers: { "CONTENT_TYPE" => "application/json" }
+  
+    expect(response). to be_successful
+  
+    poster = JSON.parse(response.body, symbolize_names: true)
+  
+    expect(poster[:data][:attributes][:name]).to eq(@poster_1[:name])
+    expect(poster[:data][:attributes][:description]).to eq(@poster_1[:description])
+    expect(poster[:data][:attributes][:price]).to eq(@poster_1[:price])
+    expect(poster[:data][:attributes][:year]).to eq(@poster_1[:year])
+    expect(poster[:data][:attributes][:vintage]).to eq(@poster_1[:vintage])
+    expect(poster[:data][:attributes][:img_url]).to eq(@poster_1[:img_url])
   end
 end
