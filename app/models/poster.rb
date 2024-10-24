@@ -1,3 +1,7 @@
 class Poster < ApplicationRecord
-  #FILTER AND SORT LOGIC. Include tests for these in the model_spec also.
+  validates :name, :description, :price, :year, :img_url, presence: true
+  validates :price, numericality: { greater_than: 0 }
+  validates :year, numericality: { only_integer: true }
+  validates :vintage, inclusion: { in: [true, false] }
 end
+  
