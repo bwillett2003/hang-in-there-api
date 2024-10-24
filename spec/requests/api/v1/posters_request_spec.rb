@@ -10,7 +10,8 @@ RSpec.describe "API Posters Endpoints" do
       price: 89.00,
       year: 2018,
       vintage: true,
-      img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d"
+      img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d",
+      created_at: 2.days.ago
     )
 
     @poster_2 = Poster.create(
@@ -19,7 +20,8 @@ RSpec.describe "API Posters Endpoints" do
       price: 35.00,
       year: 2023,
       vintage: false,
-      img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d"
+      img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d",
+      created_at: 1.day.ago
     )
 
     @poster_3 = Poster.create(
@@ -28,7 +30,8 @@ RSpec.describe "API Posters Endpoints" do
       price: 73.00,
       year: 2015,
       vintage: false,
-      img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d"
+      img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d",
+      created_at: Time.now
     )
   end
 
@@ -138,5 +141,31 @@ end
   
     expect(json['data']).to be_empty
     expect(json['meta']).to eq({ 'count' => 0 })
+  end
+
+  it "can return posters sorted in ascending order by their created_at attribute" do
+
+    get "/api/v1/posters?sort=asc"
+
+    expect(response).to be_successful
+
+    posters = JSON.parse(response.body, symbolize_names: true)[:data]
+    
+    expect(posters[0][:id].to_i).to eq(@poster_1.id)
+    expect(posters[1][:id].to_i).to eq(@poster_2.id)
+    expect(posters[2][:id].to_i).to eq(@poster_3.id)
+  end
+
+  it "can return posters sorted in descending order by their 'created_at' attribute" do
+
+    get "/api/v1/posters?sort=desc"
+
+    expect(response).to be_successful
+
+    posters = JSON.parse(response.body, symbolize_names: true)[:data]
+    
+    expect(posters[0][:id].to_i).to eq(@poster_3.id)
+    expect(posters[1][:id].to_i).to eq(@poster_2.id)
+    expect(posters[2][:id].to_i).to eq(@poster_1.id)
   end
 end
