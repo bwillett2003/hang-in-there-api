@@ -13,7 +13,7 @@ RSpec.describe Poster, type: :model do
     it { should allow_value(false).for(:vintage) }
   end
 
-  describe "The filter_by_params Class Method" do
+  describe "The apply_params Class Method" do
     before(:each) do
       Poster.destroy_all
   
@@ -49,12 +49,12 @@ RSpec.describe Poster, type: :model do
     end
 
     it "can return posters sorted by ascending order" do
-      result = Poster.filter_by_params(sort: 'asc')
+      result = Poster.apply_params(sort: 'asc')
       expect(result).to eq([@poster_1, @poster_2, @poster_3])
     end
 
-    it "can return poster sorted by descending order" do
-      result = Poster.filter_by_params(sort: 'desc')
+    it "can return posters sorted by descending order" do
+      result = Poster.apply_params(sort: 'desc')
       expect(result).to eq([@poster_3, @poster_2, @poster_1])
     end
   end
