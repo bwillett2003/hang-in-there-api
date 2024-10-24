@@ -48,6 +48,7 @@ RSpec.describe Poster, type: :model do
       )
     end
 
+  describe "apply_params" do
     it "can return posters sorted by ascending order" do
       result = Poster.apply_params(sort: 'asc')
       expect(result).to eq([@poster_1, @poster_2, @poster_3])
@@ -57,5 +58,16 @@ RSpec.describe Poster, type: :model do
       result = Poster.apply_params(sort: 'desc')
       expect(result).to eq([@poster_3, @poster_2, @poster_1])
     end
+
+    it "can return posters with a price greater than or equal to min_price" do
+      result = Poster.apply_params(min_price: 50)
+      expect(result).to eq([@poster_1, @poster_3])
+    end
+
+    it "can return posters with a price less than or equal to max_price" do
+      result = Poster.apply_params(max_price: 50)
+      expect(result).to eq([@poster_2])
+    end
+  end
   end
 end

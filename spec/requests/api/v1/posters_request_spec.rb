@@ -62,7 +62,7 @@ end
     get "/api/v1/posters/#{@poster_1.id}"
 
     expect(response).to be_successful
-# require 'pry'; binding.pry
+
     poster = JSON.parse(response.body, symbolize_names: true)
 
     expect(poster[:data]).to have_key(:id)
