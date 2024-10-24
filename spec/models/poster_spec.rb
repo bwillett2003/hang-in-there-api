@@ -57,5 +57,15 @@ RSpec.describe Poster, type: :model do
       result = Poster.apply_params(sort: 'desc')
       expect(result).to eq([@poster_3, @poster_2, @poster_1])
     end
+
+    it "can return posters filter by name (case-insenstitive and partial names)" do
+      result_1 = Poster.apply_params(name: 'gReT')
+      expect(result_1).to include(@poster_1)
+      expect(result_1).not_to include(@poster_2, @poster_3)
+
+      result_2 = Poster.apply_params(name: 'dE')
+      expect(result_2).to include(@poster_2, @poster_3)
+      expect(result_2).not_to include(@poster_1)
+    end
   end
 end
