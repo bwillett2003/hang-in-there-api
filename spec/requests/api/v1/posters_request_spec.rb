@@ -2,6 +2,8 @@ require "rails_helper"
 
 RSpec.describe "API Posters Endpoints" do
   before(:each) do
+    Poster.destroy_all
+
     @poster_1 = Poster.create(
       name: "REGRET",
       description: "Hard work rarely pays off.",
@@ -53,10 +55,11 @@ RSpec.describe "API Posters Endpoints" do
 end
 
   it "can get one poster" do
+
     get "/api/v1/posters/#{@poster_1.id}"
 
     expect(response).to be_successful
-
+# require 'pry'; binding.pry
     poster = JSON.parse(response.body, symbolize_names: true)
 
     expect(poster[:data]).to have_key(:id)
@@ -111,5 +114,29 @@ end
     
     final_count = JSON.parse(response.body, symbolize_names: true)[:data].count
     expect(final_count).to eq(initial_count - 1)
+  end
+
+  it "has a JSON respons with a 'meta' count" do
+
+      @posters = [@poster_1, @poster_2, @poster_3]
+
+      get "/api/v1/posters"
+
+      expect(response). to have_http_status(:ok)
+      json = JSON.parse(response.body)
+
+      expect(json['data'].size).to eq(@posters.size) #checks if the number of posters returned by the API matches the number of posters created @setup
+      expect(json['meta']).to eq({'count' => @posters.size }) #verifies that the meta information in the response correctly reflects the number of posters returned 
+  end
+
+  it "returns an empty array and count of zero when no posters exist" do
+    Poster.destroy_all
+  
+    get "/api/v1/posters"
+  
+    json = JSON.parse(response.body)
+  
+    expect(json['data']).to be_empty
+    expect(json['meta']).to eq({ 'count' => 0 })
   end
 end
