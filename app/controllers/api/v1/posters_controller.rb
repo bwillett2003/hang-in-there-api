@@ -1,4 +1,6 @@
 class Api::V1::PostersController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+  
   def index
     posters = Poster.apply_params(
       sort: params[:sort],
@@ -32,6 +34,10 @@ class Api::V1::PostersController < ApplicationController
   end
 
   private
+
+  def render_not_found
+    render json: { error: 'Poster not found' }, status: :not_found
+  end
   
   def poster_params
     params.require(:poster).permit(:name, :description, :price, :year, :vintage, :img_url)
