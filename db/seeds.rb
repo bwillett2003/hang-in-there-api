@@ -33,3 +33,30 @@ Poster.create(
   vintage: false,
   img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d"
   )
+
+  Poster.create(
+  name: "FUTILITY",
+  description: "You're not good enough.",
+  price: 100.00,
+  year: 1960,
+  vintage: true,
+  img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d"
+  )
+
+Poster.create(
+  name: "HOPELESSNESS",
+  description: "Stay in your comfort zone; it's safer.",
+  price: 10.00,
+  year: 2022,
+  vintage: false,
+  img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d"
+  )
+
+Poster.create(
+  name: "FEAR",
+  description: "Giving up is always an option.",
+  price: 73.00,
+  year: 2020,
+  vintage: false,
+  img_url:  "https://plus.unsplash.com/premium_photo-1661293818249-fddbddf07a5d"
+  )
