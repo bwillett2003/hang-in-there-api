@@ -1,7 +1,10 @@
 class Api::V1::PostersController < ApplicationController
   def index
     posters = Poster.apply_params(
-      sort: params[:sort]
+      sort: params[:sort],
+      name: params[:name],
+      min_price: params[:min_price],
+      max_price: params[:max_price]
     )
     render json: PosterSerializer.new(posters, { meta: { count: posters.size}})
   end

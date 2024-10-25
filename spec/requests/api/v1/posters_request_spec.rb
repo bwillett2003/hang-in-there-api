@@ -168,4 +168,16 @@ end
     expect(posters[1][:id].to_i).to eq(@poster_2.id)
     expect(posters[2][:id].to_i).to eq(@poster_1.id)
   end
+
+  it "can return posters with a partial name match" do
+    get "/api/v1/posters?name=dE"
+
+    expect(response).to be_successful
+
+    posters = JSON.parse(response.body, symbolize_names:true)[:data]
+
+    expect(posters.count).to eq(2)
+    expect(posters[0][:attributes][:name]).to eq("DEFEAT")
+  	expect(posters[1][:attributes][:name]).to eq("DESPAIR")
+  end
 end

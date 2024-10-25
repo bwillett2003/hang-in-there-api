@@ -7,6 +7,7 @@ class Poster < ApplicationRecord
   def self.apply_params(params = {})
     posters = all
     posters = posters.order(created_at: (params[:sort] == "desc" ? :desc : :asc)) if params[:sort].present?
+    posters = posters.where('name ILIKE ?', "%#{params[:name]}%") if params[:name].present?
     posters = posters.where( "price <= ?", params[:max_price]) if params[:max_price].present?
     posters = posters.where( "price >= ?", params[:min_price]) if params[:min_price].present?
     posters
