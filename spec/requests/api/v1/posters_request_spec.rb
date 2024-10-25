@@ -185,7 +185,10 @@ describe "error handling" do
   it "returns a 404 not found error" do
     get "/api/v1/posters/99999"
     expect(response).to have_http_status(:not_found)
-    expect(JSON.parse(response.body)["error"]).to eq("Poster not found")
+
+    json = JSON.parse(response.body)
+    expect(json['errors'].first["status"].to eq("404"))
+    expect(json['errors'].first["message"].to eq("Record not found"))
     end
   end
 end
