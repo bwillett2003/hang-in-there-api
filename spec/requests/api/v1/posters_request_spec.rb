@@ -180,4 +180,12 @@ end
     expect(posters[0][:attributes][:name]).to eq("DEFEAT")
   	expect(posters[1][:attributes][:name]).to eq("DESPAIR")
   end
+
+describe "error handling" do
+  it "returns a 404 not found error" do
+    get "/api/v1/posters/99999"
+    expect(response).to have_http_status(:not_found)
+    expect(JSON.parse(response.body)["error"]).to eq("Poster not found")
+    end
+  end
 end
