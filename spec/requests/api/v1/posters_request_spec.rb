@@ -185,8 +185,8 @@ describe "error handling" do
     expect(response).to have_http_status(:not_found)
 
     json = JSON.parse(response.body)
-    expect(json['errors'].first["status"].to eq("404"))
-    expect(json['errors'].first["message"].to eq("Record not found"))
+    expect(json['errors'].first["status"]).to eq("404")
+    expect(json['errors'].first["message"]).to eq("Record not found")
     end
   end
 end
