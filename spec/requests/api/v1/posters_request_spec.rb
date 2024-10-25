@@ -128,8 +128,8 @@ end
       expect(response). to have_http_status(:ok)
       json = JSON.parse(response.body)
 
-      expect(json['data'].size).to eq(@posters.size) #checks if the number of posters returned by the API matches the number of posters created @setup
-      expect(json['meta']).to eq({'count' => @posters.size }) #verifies that the meta information in the response correctly reflects the number of posters returned 
+      expect(json['data'].size).to eq(@posters.size) 
+      expect(json['meta']).to eq({'count' => @posters.size }) 
   end
 
   it "returns an empty array and count of zero when no posters exist" do
