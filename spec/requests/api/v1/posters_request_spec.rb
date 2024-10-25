@@ -54,11 +54,10 @@ RSpec.describe "API Posters Endpoints" do
       expect(poster[:attributes][:year]).to be_a(Integer)
       expect(poster[:attributes][:vintage]).to eq(true).or eq(false)
       expect(poster[:attributes][:img_url]).to be_a(String)
+    end
   end
-end
 
   it "can get one poster" do
-
     get "/api/v1/posters/#{@poster_1.id}"
 
     expect(response).to be_successful
@@ -120,16 +119,16 @@ end
   end
 
   it "has a JSON respons with a 'meta' count" do
+    @posters = [@poster_1, @poster_2, @poster_3]
 
-      @posters = [@poster_1, @poster_2, @poster_3]
+    get "/api/v1/posters"
 
-      get "/api/v1/posters"
+    expect(response). to have_http_status(:ok)
+    json = JSON.parse(response.body)
 
-      expect(response). to have_http_status(:ok)
-      json = JSON.parse(response.body)
+    expect(json['data'].size).to eq(@posters.size) 
+    expect(json['meta']).to eq({'count' => @posters.size }) 
 
-      expect(json['data'].size).to eq(@posters.size) 
-      expect(json['meta']).to eq({'count' => @posters.size }) 
   end
 
   it "returns an empty array and count of zero when no posters exist" do
@@ -144,7 +143,6 @@ end
   end
 
   it "can return posters sorted in ascending order by their created_at attribute" do
-
     get "/api/v1/posters?sort=asc"
 
     expect(response).to be_successful
@@ -157,7 +155,6 @@ end
   end
 
   it "can return posters sorted in descending order by their 'created_at' attribute" do
-
     get "/api/v1/posters?sort=desc"
 
     expect(response).to be_successful
@@ -184,6 +181,7 @@ end
 describe "error handling" do
   it "returns a 404 not found error" do
     get "/api/v1/posters/99999"
+
     expect(response).to have_http_status(:not_found)
 
     json = JSON.parse(response.body)
